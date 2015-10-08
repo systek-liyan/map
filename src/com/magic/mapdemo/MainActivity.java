@@ -37,7 +37,7 @@ import com.magic.map.widget.onMapListener;
 	private Button mBtnStart = null;
 	private Button mBtnEnd = null;
 	private Button mBtnDel = null;
-	private Button mBtnRoute = null;
+//	private Button mBtnRoute = null;
 	public  PointF mTouchPoint = null;
 	private long mPoiId ;
 	private PoiData mStart = null;
@@ -110,23 +110,23 @@ import com.magic.map.widget.onMapListener;
 		mBtnStart = (Button) findViewById(R.id.btn_start);
 		mBtnEnd = (Button) findViewById(R.id.btn_stop);
 		mBtnDel = (Button) findViewById(R.id.btn_del);
-		mBtnRoute = (Button) findViewById(R.id.btn_route);
+	//	mBtnRoute = (Button) findViewById(R.id.btn_route);
 		mBtnStart.setOnClickListener(this);
 		mBtnEnd.setOnClickListener(this);
 		mBtnDel.setOnClickListener(this);
-		mBtnRoute.setOnClickListener(this);
+	//	mBtnRoute.setOnClickListener(this);
 		mMapView.setOnPoiListener(this);
 		
 		//信息点在初始化时便设置为可见
 		mMapView.setFilter(mFilter);
 		
 		//理论上的地图拖拽，但实验不出效果
-		mController.isMapRotateEnabled();
+	              mController.isMapRotateEnabled();
 				//mController.dragToAnimate(0, 0, 100,8);
 				//mController.centerTo(10,10);
 				//mController.moveTo(0,116);
 				//mController.setLatLon(0,0);	
-				mController.setLatLonAnimate(39916616,116390791);
+		          mController.setLatLonAnimate(39916616,116390791);
 				
 			
 		
