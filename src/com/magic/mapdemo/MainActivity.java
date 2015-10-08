@@ -1,6 +1,9 @@
 package com.magic.mapdemo;
 
 
+import com.magic.mapdemo.DrawView;
+import com.magic.mapdemo.R;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,7 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.LinearLayout;
 
 import com.magic.map.IMapLoaderCallback;
 import com.magic.map.MapManager;
@@ -58,6 +68,14 @@ import com.magic.map.widget.onMapListener;
 		mManager.addOnMapListener(this);
 		setContentView(R.layout.activity_main);
 		initComponents();
+		
+		
+		
+		FrameLayout root = (FrameLayout)findViewById(R.id.root);	
+		final DrawView draw = new DrawView(this);
+		draw.setMinimumWidth(300); 
+		draw.setMinimumHeight(500);
+		root.addView(draw);
 	}
 
 
