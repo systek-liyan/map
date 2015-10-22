@@ -1,29 +1,26 @@
 package com.magic.mapdemo;
 
 
-import com.magic.mapdemo.DrawView;
-import com.magic.mapdemo.R;
 
-import android.annotation.SuppressLint;
+
+
+
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
+import android.app.AlertDialog.Builder;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOverlay;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.LinearLayout;
-
+import android.widget.ToggleButton;
 import com.magic.map.IMapLoaderCallback;
 import com.magic.map.MapManager;
 import com.magic.map.resource.poi.PoiFilter;
@@ -33,30 +30,35 @@ import com.magic.map.view.MapController;
 import com.magic.map.widget.MapView;
 import com.magic.map.widget.onMapListener;
 
-
-@SuppressLint("NewApi") public class MainActivity extends Activity implements IMapLoaderCallback,
-		onMapListener, android.view.View.OnClickListener {
-	private static final String TAG = "地图";
+public class MainActivity extends Activity implements IMapLoaderCallback,
+		onMapListener, android.view.View.OnClickListener,
+		OnCheckedChangeListener {
+	private static final String TAG = "Map1";
 	private MapManager mManager = null;
 	private MapView mMapView = null;
 	private PoiFilter mFilter = null;
 	private TextView mPoiName = null;
 	private TextView mPoiDescription = null;
+	private TextView mPoiPhone = null;
+	private TextView mPoiUri = null;
 	private TextView mPoiLocation = null;
 	private ViewGroup mPoi = null;
+//	private EditText mCustomPoiId = null;
+	private EditText mCustomPoiName = null;
+	private EditText mCustomPoiDescription = null;
+	private EditText mCustomPoiPhone = null;
+	private EditText mCustomPoiSite = null;
 	private Button mBtnStart = null;
 	private Button mBtnEnd = null;
 	private Button mBtnDel = null;
-//	private Button mBtnRoute = null;
-	public  PointF mTouchPoint = null;
-	private long mPoiId ;
-	private PoiData mStart = null;
-	private PoiData mEnd = null;
-	private PoiData mPoiData = null;
 	
+	private PointF mTouchPoint = null;
+	private long mPoiId = 0;
 	private MapController mController;
-	private ViewOverlay mapOverlay;
-	private Context self;
+	private double cc;
+	private double dd;
+	private double ee;
+	private double ff;
 	
 	
 
@@ -68,9 +70,6 @@ import com.magic.map.widget.onMapListener;
 		mManager.addOnMapListener(this);
 		setContentView(R.layout.activity_main);
 		initComponents();
-		
-		
-		
 		FrameLayout root = (FrameLayout)findViewById(R.id.root);	
 		final DrawView draw = new DrawView(this);
 		draw.setMinimumWidth(300); 
@@ -78,75 +77,36 @@ import com.magic.map.widget.onMapListener;
 		root.addView(draw);
 	}
 
-
 	private void initComponents() {
 		mMapView = (MapView) findViewById(R.id.mapview);
-		mMapView.setClickable(true);	
-		//mapOverlay=mMapView.getOverlay();
-		//mapOverlay.add(drawable)
-		mMapView.getTouchables();		
-		mController = mMapView.getController(); 
-		
-		//GeoPoint cityLocPoint = new GeoPoint(39932002, 116430230);
-		
-		//缩放函数终于找到。缩放值为3到18.当值为3时，显示最近视角。	
-		//mController.setzoomToAnimate(3);
-		//实现直接缩放的函数，第一个参数应该是总视图大小，第二参数为0到6，6是最大放大倍数，继续往上将难以看到地图
-				mController.setZoomAnimate(0,1);
-		//地图旋转函数，参数值为旋转角度。
-		//mController.rotateToAnimate(180);
-		
-		
-		
-		
-		//实现坐标点的计算
-		//mMapView.getLayoutDirection().toPixels(cityLocPoint, myScreen);
-		//mMapData.calculateCenterLatLon();
-		
-		
-		
-		//mMapView.onScroll(null, null, 0, 3);
-		//mMapView.onZoomStarted(mTouchPoint);
-		//mMapView.refreshDrawableState();
-		
-		//mMapView.scrollBy(39958241, 116350579);
-		//mMapView.scrollTo(800, 1160);
-		//mMapView.setMinimumHeight(256);
-		//mMapView.setMinimumWidth(256);	
-		//Drawable drawable = this.getResources().getDrawable(  
-        //        R.drawable.marker_gpsvalid);       
-		//mMapView.getOverlay().add(drawable);
-		
-			
-	
+		mController=mMapView.getController();
+		mController.setZoomAnimate(0,1);
+	        
 		mPoiName = (TextView) findViewById(R.id.tv_name);
 		mPoiDescription = (TextView) findViewById(R.id.tv_description);
+		mPoiPhone = (TextView) findViewById(R.id.tv_phone);
+		mPoiUri = (TextView) findViewById(R.id.tv_uri);
 		mPoiLocation = (TextView) findViewById(R.id.tv_location);
 		mPoi = (ViewGroup) findViewById(R.id.poi_info);
 		mMapView.setMapManager(mManager);
+		//mFilter = new PoiFilter(mManager, PoiFilter.TYPE_SHOP);
 		mFilter = new PoiFilter(mManager, 2);
+	   
+		
+		
 		mBtnStart = (Button) findViewById(R.id.btn_start);
 		mBtnEnd = (Button) findViewById(R.id.btn_stop);
 		mBtnDel = (Button) findViewById(R.id.btn_del);
-	//	mBtnRoute = (Button) findViewById(R.id.btn_route);
+		
 		mBtnStart.setOnClickListener(this);
 		mBtnEnd.setOnClickListener(this);
 		mBtnDel.setOnClickListener(this);
-	//	mBtnRoute.setOnClickListener(this);
+		
 		mMapView.setOnPoiListener(this);
 		
-		//信息点在初始化时便设置为可见
-		mMapView.setFilter(mFilter);
 		
-		//理论上的地图拖拽，但实验不出效果
-	              mController.isMapRotateEnabled();
-				//mController.dragToAnimate(0, 0, 100,8);
-				//mController.centerTo(10,10);
-				//mController.moveTo(0,116);
-				//mController.setLatLon(0,0);	
-		          mController.setLatLonAnimate(39916616,116390791);
-				
-			
+		//取消转换按钮功能，直接按照过滤结果显示。
+		mMapView.setFilter(mFilter);
 		
 	}
 
@@ -163,6 +123,7 @@ import com.magic.map.widget.onMapListener;
 	@Override
 	public void onMapInit(MapData data) {
 		Log.d(TAG, getString(R.string.map_init));
+		//mMapData=data;
 	}
 
 	@Override
@@ -187,20 +148,19 @@ import com.magic.map.widget.onMapListener;
 
 	@Override
 	public void onPoiClick(PoiData data) {
-		mPoiData = data;
 		mPoiName.setText(data.getName());
 		mPoiDescription.setText(data.getDescription());
+		//此处修改phone为显示id
+		mPoiPhone.setText("Phone Num:" + data.getId());
+		mPoiUri.setText("Site:" + data.getUri());
 		mPoiLocation.setText(String.format("Lat:%f, Lon:%f", data.getLat(),
 				data.getLon()));
 		mPoiId = data.getId();
-		//此处原本为导览键设置初始不可用
 	//	if (data.getType() == PoiFilter.TYPE_CUSTOM) {
 	//		mBtnDel.setEnabled(true);
-	//	} else {
+	//	} else {.0.
 	//		mBtnDel.setEnabled(false);
 	//	}
-		
-		
 		if (!mPoi.isShown()) {
 			mPoi.setVisibility(View.VISIBLE);
 		}
@@ -214,75 +174,90 @@ import com.magic.map.widget.onMapListener;
 
 	@Override
 	public void onLongPress(PointF point) {
-		mTouchPoint = point;
-	//
-		//此处应添加传送消息功能，把mTouchPoint信息传送出去。
-		//mTouchPoint的x，y参数
-	//	if (mBtnPoiSwitcher.isChecked()) {
-	//		onCreateDialog(0).show();
-	//	}
+		
+		//mTouchPoint = point;
+		Builder builder = new Builder(MainActivity.this);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View layout = null;
+		layout = inflater.inflate(R.layout.custom_poi, null);
+		//mCustomPoiId = (EditText) layout.findViewById(R.id.et_id);
+		mCustomPoiName = (EditText) layout.findViewById(R.id.et_name);
+		mCustomPoiDescription = (EditText) layout
+				.findViewById(R.id.et_description);
+		mCustomPoiPhone = (EditText) layout.findViewById(R.id.et_phone);
+		mCustomPoiSite = (EditText) layout.findViewById(R.id.et_site);
+		builder.setView(layout);
+		PoiData data = new PoiData(111112345,
+				mCustomPoiName.getText().toString(),
+				mCustomPoiDescription.getText()
+						.toString(), mCustomPoiPhone
+						.getText().toString(),
+				mCustomPoiSite.getText().toString(),
+				PoiFilter.TYPE_SHOP);
+//		PoiData data1 = new PoiData(111112346,
+//				mCustomPoiName.getText().toString(),
+//				mCustomPoiDescription.getText()
+//						.toString(), mCustomPoiPhone
+//						.getText().toString(),
+//				mCustomPoiSite.getText().toString(),
+//				PoiFilter.TYPE_SHOP);
+//		PoiData data2 = new PoiData(111112347,
+//				mCustomPoiName.getText().toString(),
+//				mCustomPoiDescription.getText()
+//						.toString(), mCustomPoiPhone
+//						.getText().toString(),
+//				mCustomPoiSite.getText().toString(),
+//				PoiFilter.TYPE_SHOP);
+		
+		
+		double x=116.356738,y=39.959162;
+		//PointF ppp=new PointF(0,0);
+		//mMapView.addPoi(ppp,data);
+		cc=mMapView.getLatitude();
+		dd=mMapView.getLongitude();
+		ee=x-dd;
+		ff=cc-y;
+		//mMapData.calculateCenterLatLon();
+		//mMapData.calculateZoom();
+		float n=(float)(570+ee*186431.9);
+		float m=(float)(810+ff*243191.9);
+		mTouchPoint=new PointF(n,m);
+		mMapView.addPoi(mTouchPoint, data);
+		  
+		
 	}
 
-	
 	@Override
 	public void onMapLoadError(int arg0) {
-		new AlertDialog.Builder(self)
-		 .setTitle("标题") 
-		 .setMessage("地图加载错误请重新加载")
-		 	.setPositiveButton("确定", null)
-		 	.show();
-	 }
+		onCreateDialog(1).show();
+	}
 
-	//@Override
-	
-	
-	//信息点描述面板三个按钮的点击事件
-	
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_del:
-			//mMapView.delPoi(mPoiId);
-			//mPoi.setVisibility(View.INVISIBLE);
-			//此处用mPoiId进行关联，此按键点击事件设为播放导览函数（参数：mPoiId）
-			//
-			//********************未完成***********************
+			mMapView.delPoi(mPoiId);
+			mPoi.setVisibility(View.INVISIBLE);
 			break;
-			
-			//此处留作之后的路径规划
-		//case R.id.btn_start:
-		//	mStart = mPoiData;
-		//	mBtnRoute.setEnabled(checkRouteReadly());
-		//	break;
-		//case R.id.btn_stop:
-		//	mEnd = mPoiData;
-		//	mBtnRoute.setEnabled(checkRouteReadly());
-		//	break;
-		//case R.id.btn_route:
-			
-			//路径规划按钮的暂时取消功能
-			//mMapView.getController().searchRoute(mStart, mEnd);
-		//	break;
+		case R.id.btn_start:
+			// BinaryMapIndexReader[] files = mManager.TestRoute();
+			break;
+		case R.id.btn_stop:
+			break;
+		
 		}
 	}
-	//路径规划
-	//private boolean checkRouteReadly(){
-	//	return mStart != null && mEnd != null;
-	//}
+	
 
-	
-	
-	
-	//信息点显示隐藏转换按钮
-	//public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	//	if (isChecked) {
-	//		mMapView.setFilter(mFilter);
-	//	} else {
-	//		mMapView.setFilter(null);
-	//	}
-	//  }
 
 	@Override
 	public void onNewRouteCalculated(boolean arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
 		
 	}

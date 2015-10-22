@@ -21,21 +21,22 @@ public final class R {
         public static final int poi_stop=0x7f020004;
     }
     public static final class id {
-        public static final int btn_del=0x7f07000e;
-        public static final int btn_start=0x7f07000c;
-        public static final int btn_stop=0x7f07000d;
+        public static final int btn_del=0x7f07000f;
+        public static final int btn_start=0x7f07000d;
+        public static final int btn_stop=0x7f07000e;
         public static final int et_description=0x7f070005;
         public static final int et_id=0x7f070003;
         public static final int et_name=0x7f070004;
-        public static final int et_site=0x7f070006;
+        public static final int et_phone=0x7f070006;
+        public static final int et_site=0x7f070007;
         public static final int mapview=0x7f070001;
         public static final int poi_info=0x7f070002;
         public static final int root=0x7f070000;
-        public static final int tv_description=0x7f070008;
-        public static final int tv_location=0x7f07000b;
-        public static final int tv_name=0x7f070007;
-        public static final int tv_phone=0x7f070009;
-        public static final int tv_uri=0x7f07000a;
+        public static final int tv_description=0x7f070009;
+        public static final int tv_location=0x7f07000c;
+        public static final int tv_name=0x7f070008;
+        public static final int tv_phone=0x7f07000a;
+        public static final int tv_uri=0x7f07000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -44,25 +45,26 @@ public final class R {
         public static final int poi=0x7f030003;
     }
     public static final class string {
-        public static final int amenity_load_finish=0x7f05000e;
+        public static final int amenity_load_finish=0x7f05000f;
         public static final int app_name=0x7f050000;
-        public static final int del_poi=0x7f05000a;
-        public static final int error_id=0x7f050006;
-        public static final int map_error=0x7f050007;
-        public static final int map_finish=0x7f05000f;
-        public static final int map_index_finish=0x7f050011;
-        public static final int map_init=0x7f050012;
-        public static final int map_load_finish=0x7f050010;
+        public static final int del_poi=0x7f05000b;
+        public static final int error_id=0x7f050007;
+        public static final int map_error=0x7f050008;
+        public static final int map_finish=0x7f050010;
+        public static final int map_index_finish=0x7f050012;
+        public static final int map_init=0x7f050013;
+        public static final int map_load_finish=0x7f050011;
         public static final int poi_custom_description=0x7f050003;
-        public static final int poi_custom_id=0x7f050005;
+        public static final int poi_custom_id=0x7f050006;
         public static final int poi_custom_name=0x7f050002;
-        public static final int poi_custom_site=0x7f050004;
+        public static final int poi_custom_phone=0x7f050004;
+        public static final int poi_custom_site=0x7f050005;
         public static final int poi_custom_title=0x7f050001;
-        public static final int poi_hidden=0x7f05000c;
-        public static final int poi_show=0x7f05000b;
-        public static final int route=0x7f05000d;
-        public static final int set_route_end=0x7f050009;
-        public static final int set_route_start=0x7f050008;
+        public static final int poi_hidden=0x7f05000d;
+        public static final int poi_show=0x7f05000c;
+        public static final int route=0x7f05000e;
+        public static final int set_route_end=0x7f05000a;
+        public static final int set_route_start=0x7f050009;
     }
     public static final class style {
         /** 

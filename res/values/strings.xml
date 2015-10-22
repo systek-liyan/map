@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">刘荣泽</string>
+    <string name="app_name">MMapDemo</string>
+
     <string name="poi_custom_title">用户自定义</string>
     <string name="poi_custom_name">名字</string>
     <string name="poi_custom_description">描述信息</string>
+    <string name="poi_custom_phone">电话</string>
     <string name="poi_custom_site">网页链接</string>
     <string name="poi_custom_id">ID</string>
     <string name="error_id">请输入该自定义POI点的ID</string>
-    <string name="map_error">加载地图发生错误\n\n请下载有效的地图文件(.obf)拷贝至SD卡中的osmap目录中，然后重试。</string>
+    <string name="map_error">加载地图发生错误\n\n请将有效的地图文件(.obf)拷贝至SD卡中的osmap目录中，然后重试。</string>
     <string name="set_route_start">设置为起点</string>
     <string name="set_route_end">设置为终点</string>
-    <string name="del_poi">播放导览</string>
-    <string name="poi_show">显示（暂时无用）</string>
-    <string name="poi_hidden">隐藏（暂时无用）</string>
-    <string name="route">路径规划</string>
+    <string name="del_poi">删除该POI点</string>
+    <string name="poi_show">显示POI信息点</string>
+    <string name="poi_hidden">不显示POI信息点</string>
+    <string name="route">显示路径规划</string>
     <string name="amenity_load_finish">POI信息检索完毕</string>
     <string name="map_finish">地图完成显示，即将销毁</string>
     <string name="map_load_finish">地图加载完成</string>
     <string name="map_index_finish">地图检索完成</string>
     <string name="map_init">地图开始初始化</string>
-
 </resources>
