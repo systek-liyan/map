@@ -59,6 +59,10 @@ public class MainActivity extends Activity implements IMapLoaderCallback,
 	private double dd;
 	private double ee;
 	private double ff;
+	private float aaa;
+	private float ccc;
+	private int bbb;
+	
 	
 	
 
@@ -123,7 +127,7 @@ public class MainActivity extends Activity implements IMapLoaderCallback,
 	@Override
 	public void onMapInit(MapData data) {
 		Log.d(TAG, getString(R.string.map_init));
-		//mMapData=data;
+		
 	}
 
 	@Override
@@ -211,17 +215,22 @@ public class MainActivity extends Activity implements IMapLoaderCallback,
 		
 		
 		double x=116.356738,y=39.959162;
-		//PointF ppp=new PointF(0,0);
-		//mMapView.addPoi(ppp,data);
+		//(570,810)是mMapView在任何情况下获取坐标对应的屏幕位置！！！
+		PointF ppp=new PointF(300,400);
+		mMapView.addPoi(ppp,data);
 		cc=mMapView.getLatitude();
 		dd=mMapView.getLongitude();
 		ee=x-dd;
 		ff=cc-y;
-		//mMapData.calculateCenterLatLon();
-		//mMapData.calculateZoom();
+		aaa=mMapView.getDensity();
+		bbb=mMapView.getZoom();
+		ccc=mMapView.getZoomScale();
+		//算式后的系数，一为17(0,1)倍率下，x轴参数，一为y轴参数。
+		//float n=(float)(570+ee*186431.9);
+		//float m=(float)(810+ff*243191.9);
 		float n=(float)(570+ee*186431.9);
 		float m=(float)(810+ff*243191.9);
-		mTouchPoint=new PointF(n,m);
+		mTouchPoint=new PointF(800,1500);
 		mMapView.addPoi(mTouchPoint, data);
 		  
 		
